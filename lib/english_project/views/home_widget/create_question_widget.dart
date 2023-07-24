@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -47,7 +48,7 @@ class _CreateQuestionWidgetState extends State<CreateQuestionWidget> {
                 Question _questionObject = Question(
                     question: question.text,
                     answers: [answer1.text, answer2.text],
-                    correctIndex: int.parse(correct.text));
+                    correctIndex: int.parse(correct.text), id: Random().nextInt(9999999999));
                 _questionList.add(_questionObject);
                 String questionEncode = jsonEncode(_questionList);
 
