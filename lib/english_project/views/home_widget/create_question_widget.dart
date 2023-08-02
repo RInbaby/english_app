@@ -48,7 +48,7 @@ class _CreateQuestionWidgetState extends State<CreateQuestionWidget> {
                 Question _questionObject = Question(
                     question: question.text,
                     answers: [answer1.text, answer2.text],
-                    correctIndex: int.parse(correct.text), id: Random().nextInt(9999999999));
+                    correctIndex: int.parse(correct.text), id: Random().nextInt(99999));
                 _questionList.add(_questionObject);
                 String questionEncode = jsonEncode(_questionList);
 

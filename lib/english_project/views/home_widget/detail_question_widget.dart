@@ -14,6 +14,8 @@ class DetailQuestionWidget extends StatefulWidget {
 }
 
 class _DetailQuestionWidgetState extends State<DetailQuestionWidget> {
+  bool isCheckKey = false;
+  num indexCheck = 0;
   List<Icon> iconList = [
     const Icon(Icons.account_balance, size: 50, color: Colors.white),
     const Icon(Icons.adb, size: 50, color: Colors.white),
@@ -58,20 +60,38 @@ class _DetailQuestionWidgetState extends State<DetailQuestionWidget> {
                   Text(
                     ' ${widget.questionItem.question}\n ',
                     style: const TextStyle(fontSize: 22),
-                  )
+                  ),
                 ],
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _buildAnswer(0),
-                const SizedBox(
-                  width: 8,
-                ),
-                _buildAnswer(1),
-              ],
-            )
+            ListView.builder(
+              itemCount: widget.questionItem.answers.length,
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                num correctKey = widget.questionItem.correctIndex;
+                return InkWell(
+                  onTap: () async {
+                    setState(() {
+                      indexCheck = 1;
+                    });
+                    if (correctKey == index) {
+                      setState(() {
+                        isCheckKey = true;
+                      });
+                    }
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5),
+                    child: _buildAnswer(index),
+                  ),
+                );
+              },
+            ),
+            const SizedBox(
+              height: 12,
+            ),
+            indexCheck == 1 && !isCheckKey ? _buildResultInCorrect() : const SizedBox(),
+            isCheckKey ? _buildResultCorrect() : const SizedBox(),
           ],
         ),
       ),
@@ -82,6 +102,7 @@ class _DetailQuestionWidgetState extends State<DetailQuestionWidget> {
     return Container(
       width: (MediaQuery.of(context).size.width * 0.8) / 2,
       padding: const EdgeInsets.all(30),
+      margin: const EdgeInsets.symmetric(horizontal: 25),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: const Color(0xFFF26371),
@@ -90,6 +111,34 @@ class _DetailQuestionWidgetState extends State<DetailQuestionWidget> {
         ],
       ),
       child: Align(alignment: Alignment.center, child: Text(widget.questionItem.answers[index])),
+    );
+  }
+
+  Widget _buildResultCorrect() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: const [
+        Icon(
+          Icons.check,
+          color: Color(0xFF52AB78),
+        ),
+        // isCheckResult?
+        Text("  DONE"),
+      ],
+    );
+  }
+
+  Widget _buildResultInCorrect() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: const [
+        Icon(
+          Icons.cancel,
+          color: Color(0xFFbf302a),
+        ),
+        // isCheckResult?
+        Text("  Failed"),
+      ],
     );
   }
 }
