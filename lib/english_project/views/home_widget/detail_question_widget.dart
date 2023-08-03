@@ -74,7 +74,7 @@ class _DetailQuestionWidgetState extends State<DetailQuestionWidget> {
                     setState(() {
                       indexCheck = 1;
                     });
-                    if (correctKey == index) {
+                    if (correctKey == (index + 1)) {
                       setState(() {
                         isCheckKey = true;
                       });
@@ -90,8 +90,7 @@ class _DetailQuestionWidgetState extends State<DetailQuestionWidget> {
             const SizedBox(
               height: 12,
             ),
-            indexCheck == 1 && !isCheckKey ? _buildResultInCorrect() : const SizedBox(),
-            isCheckKey ? _buildResultCorrect() : const SizedBox(),
+            if (indexCheck == 1) !isCheckKey ? _buildResultInCorrect() : _buildResultCorrect(),
           ],
         ),
       ),

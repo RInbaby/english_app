@@ -58,33 +58,37 @@ class _HomeScreenScreenState extends State<HomeWidget> {
               _loadData();
             });
           },
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Column(
-              children: [
-                const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 10),
-                  child: Text(
-                    "Questions",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+          child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Column(
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    child: Text(
+                      "Questions",
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                    ),
                   ),
-                ),
-                _questionList.isNotEmpty
-                    ? ListView.builder(
-                        itemCount: _questionList.length,
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          // print(m1[index].question);
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 5),
-                            child: _itemQuestion(_questionList[index], index),
-                          );
-                        },
-                      )
-                    : const SizedBox(
-                        child: Text("Không có dữ liệu nào, vui lòng thêm mới để hiển thị!"),
-                      ),
-              ],
+                  _questionList.isNotEmpty
+                      ? ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: _questionList.length,
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            // print(m1[index].question);
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 5),
+                              child: _itemQuestion(_questionList[index], index),
+                            );
+                          },
+                        )
+                      : const SizedBox(
+                          child: Text("Không có dữ liệu nào, vui lòng thêm mới để hiển thị!"),
+                        ),
+                ],
+              ),
             ),
           ),
         ));
@@ -94,7 +98,10 @@ class _HomeScreenScreenState extends State<HomeWidget> {
     return InkWell(
       onTap: () {
         Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return DetailQuestionWidget( indexQuestion: index,questionItem: questionItem,);
+          return DetailQuestionWidget(
+            indexQuestion: index,
+            questionItem: questionItem,
+          );
         }));
       },
       child: Container(
@@ -108,13 +115,18 @@ class _HomeScreenScreenState extends State<HomeWidget> {
         padding: const EdgeInsets.all(15),
         child: Row(
           children: [
-            const Icon(Icons.question_answer, color: Color(0xFF52AB78),),
-            const SizedBox(width: 8,),
+            const Icon(
+              Icons.question_answer,
+              color: Color(0xFF52AB78),
+            ),
+            const SizedBox(
+              width: 8,
+            ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Câu hỏi số ${index+1}',
+                  'Câu hỏi số ${index + 1}',
                   style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
                 ),
                 Text(questionItem.question ?? ''),
