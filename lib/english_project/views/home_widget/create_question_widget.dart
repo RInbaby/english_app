@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../data/constants.dart';
 import '../../data/models/questions.dart';
 
 class CreateQuestionWidget extends StatefulWidget {
@@ -53,9 +54,15 @@ class _CreateQuestionWidgetState extends State<CreateQuestionWidget> {
                 _questionList.add(_questionObject);
                 String questionEncode = jsonEncode(_questionList);
 
-                _sharedPreferences.setString("question", questionEncode);
+                _sharedPreferences.setString(Constants.question, questionEncode);
               },
-              child: const Icon(Icons.save_outlined)),
+              child: const Align(
+                alignment: Alignment.center,
+                child: Text(
+                  "Lưu",
+                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 22),
+                ),
+              )),
         ],
         leading: InkWell(
             onTap: () {

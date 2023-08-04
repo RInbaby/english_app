@@ -1,7 +1,10 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:learnning_model_project/english_project/data/constants.dart';
 import 'package:learnning_model_project/english_project/data/models/questions.dart';
+import 'package:learnning_model_project/english_project/views/home_widget/setting_list_item.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'create_question_widget.dart';
@@ -30,13 +33,15 @@ class _HomeScreenScreenState extends State<HomeWidget> {
     //   _questionList = List.from(jsonDecode((prefs.get("question")).toString()));
     // });
 
-    final json = jsonDecode(prefs.get("question")!.toString());
-
+    final json = jsonDecode(prefs.get(Constants.question)!.toString());
     _questionList = (json as List).map((e) => Question.fromJson(e as Map<String, dynamic>)).toList();
+
+    prefs.setInt(Constants.questionLength, _questionList.length);
   }
 
   @override
   Widget build(BuildContext context) {
+    num listDisable = 0;
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -50,7 +55,19 @@ class _HomeScreenScreenState extends State<HomeWidget> {
                 },
                 child: const Icon(Icons.add_circle_outline)),
           ],
-          leading: const Icon(Icons.settings),
+          leading: InkWell(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return const SettingListItems();
+                })).then((value) {
+                  if (value != null) {
+                    setState(() {
+                      listDisable = value;
+                    });
+                  }
+                });
+              },
+              child: const Icon(Icons.settings)),
         ),
         body: RefreshIndicator(
           onRefresh: () async {
@@ -67,22 +84,29 @@ class _HomeScreenScreenState extends State<HomeWidget> {
                   const Padding(
                     padding: EdgeInsets.symmetric(vertical: 10),
                     child: Text(
-                      "Questions",
+                      "Questions ",
                       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
                     ),
                   ),
                   _questionList.isNotEmpty
-                      ? ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: _questionList.length,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            // print(m1[index].question);
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 5),
-                              child: _itemQuestion(_questionList[index], index),
-                            );
-                          },
+                      ? Column(
+                          children: [
+                            Text("Số lượng câu hỏi ${_questionList.length}"),
+                            ListView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: _questionList.length,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 5),
+                                  child: _itemQuestion(
+                                      _questionList[listDisable == 1 ? Random().nextInt(_questionList.length) : index],
+                                      index),
+                                  // child: _itemQuestion(_questionList[Random().nextInt(_questionList.length)], index),
+                                );
+                              },
+                            ),
+                          ],
                         )
                       : const SizedBox(
                           child: Text("Không có dữ liệu nào, vui lòng thêm mới để hiển thị!"),
