@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../data/data_source/fetch_data_iml.dart';
 import '../../data/setting_ext.dart';
 
 class SettingListItems extends StatefulWidget {
@@ -11,6 +12,9 @@ class SettingListItems extends StatefulWidget {
 
 class _SettingListItemsState extends State<SettingListItems> {
   num chooseIndex = -1;
+  final getQuestionsDefault =  SetDefault();
+  final getQuestionsRandom =  SetRanDom();
+  final save =  SaveSetting();
 
   @override
   Widget build(BuildContext context) {
