@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 
@@ -9,29 +11,43 @@ import '../constants.dart';
 
 class SetDefault implements FetchData {
   @override
-  List<Question> getQuestion;
-
-  SetDefault(List<Question> question) {
-    question = _loadData();
+  Future<List<Question>> getQuestion() {
     return _loadData();
   }
+
+// SetDefault(List<Question> question) {
+//   question = _loadData();
+//   return _loadData();
+// }
 }
 
 class SetRanDom implements FetchData {
   @override
-  List<Question> getQuestion;
-
-  SetRanDom(List<Question> questionList) {
-    final List<Question> _list = questionList;
-    var lengthList = questionList.length;
-    questionList.clear();
-    return questionList..add(_list[Random().nextInt(lengthList)]);
+  Future<List<Question>> getQuestion() async {
+    final List<Question> questionList = await _loadData();
+    return questionList..shuffle();
   }
+
+// SetRanDom(List<Question> questionList) {
+//   final List<Question> _list = questionList;
+//   var lengthList = questionList.length;
+//   questionList.clear();
+//   return questionList..add(_list[Random().nextInt(lengthList)]);
+// }
 }
 
-class SaveSetting implements FetchData {
-  @override
-  List<Question> getQuestion;
+class AppSetting {
+  AppSetting._();
+  static final AppSetting instance = AppSetting._();
+
+  void saveQuestionSetting(int value) {
+    // dung share pref de luu
+  }
+
+  int getQuestionSetting() {
+    // dung share pref de lay
+    return 0;
+  }
 }
 
 Future<List<Question>> _loadData() async {

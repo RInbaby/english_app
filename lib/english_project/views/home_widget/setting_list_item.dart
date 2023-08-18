@@ -12,9 +12,11 @@ class SettingListItems extends StatefulWidget {
 
 class _SettingListItemsState extends State<SettingListItems> {
   num chooseIndex = -1;
-  final getQuestionsDefault =  SetDefault();
-  final getQuestionsRandom =  SetRanDom();
-  final save =  SaveSetting();
+  // final getQuestionsDefault =  SetDefault();
+  // final getQuestionsRandom =  SetRanDom();
+  // final save =  SaveSetting();
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +51,7 @@ class _SettingListItemsState extends State<SettingListItems> {
                     onTap: () async {
                       setState(() {
                         chooseIndex = index;
+                        AppSetting.instance.saveQuestionSetting(index);
                       });
                     },
                     child: Container(
@@ -107,3 +110,6 @@ class _SettingListItemsState extends State<SettingListItems> {
     );
   }
 }
+
+
+

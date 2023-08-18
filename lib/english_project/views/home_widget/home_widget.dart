@@ -7,6 +7,8 @@ import 'package:learnning_model_project/english_project/data/models/questions.da
 import 'package:learnning_model_project/english_project/views/home_widget/setting_list_item.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../data/data_source/fetch_data_iml.dart';
+import '../../data/setting_ext.dart';
 import 'create_question_widget.dart';
 import 'detail_question_widget.dart';
 
@@ -24,6 +26,27 @@ class _HomeScreenScreenState extends State<HomeWidget> {
   @override
   void initState() {
     super.initState();
+    @override
+    void initState() {
+      super.initState();
+
+      final int settingId = AppSetting.instance.getQuestionSetting();
+
+      final SettingQuestion setting = SettingQuestionExt.getSettingFromValue(settingId);
+
+      setting.fetchData.getQuestion().then((value) {
+        if (value == null) return;
+
+        setState(() {
+          _questionList = value;
+        });
+      });
+
+
+      _loadData();
+    }
+
+
     _loadData();
   }
 
