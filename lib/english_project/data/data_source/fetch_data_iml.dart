@@ -38,10 +38,14 @@ class SetRanDom implements FetchData {
 
 class AppSetting {
   AppSetting._();
+
   static final AppSetting instance = AppSetting._();
 
-  void saveQuestionSetting(int value) {
+  void saveQuestionSetting(int value) async {
     // dung share pref de luu
+    // 1: Mặc định 2: random
+    final _sharedPreferences = await SharedPreferences.getInstance();
+    _sharedPreferences.setInt(Constants.chooseSetting, value);
   }
 
   int getQuestionSetting() {

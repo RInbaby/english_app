@@ -20,34 +20,30 @@ class HomeWidget extends StatefulWidget {
 }
 
 class _HomeScreenScreenState extends State<HomeWidget> {
-  // List _questionList = [];
   List<Question> _questionList = [];
 
   @override
   void initState() {
     super.initState();
-    @override
-    void initState() {
-      super.initState();
 
-      final int settingId = AppSetting.instance.getQuestionSetting();
-
-      final SettingQuestion setting = SettingQuestionExt.getSettingFromValue(settingId);
-
-      setting.fetchData.getQuestion().then((value) {
-        if (value == null) return;
-
-        setState(() {
-          _questionList = value;
-        });
-      });
-
-
-      _loadData();
-    }
-
-
+    _setListStatus();
     _loadData();
+  }
+
+  void _setListStatus() {
+    final int settingId = AppSetting.instance.getQuestionSetting();
+
+    final SettingQuestion setting = SettingQuestionExt.getSettingFromValue(settingId);
+
+    setting.fetchData.getQuestion().then((value) {
+      print("----------");
+      print(value);
+      if (value == null) return;
+
+      setState(() {
+        _questionList = value;
+      });
+    });
   }
 
   Future<void> _loadData() async {
@@ -59,7 +55,6 @@ class _HomeScreenScreenState extends State<HomeWidget> {
     _questionList = (json as List).map((e) => Question.fromJson(e as Map<String, dynamic>)).toList();
 
     prefs.setInt(Constants.questionLength, _questionList.length);
-
   }
 
   @override
@@ -84,9 +79,9 @@ class _HomeScreenScreenState extends State<HomeWidget> {
                   return const SettingListItems();
                 })).then((value) {
                   if (value != null) {
-                    setState(() {
-                      listDisable = value;
-                    });
+                    // setState(() {
+                    //   listDisable = value;
+                    // });
                   }
                 });
               },
