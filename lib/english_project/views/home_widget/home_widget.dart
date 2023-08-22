@@ -27,7 +27,6 @@ class _HomeScreenScreenState extends State<HomeWidget> {
     super.initState();
 
     _setListStatus();
-    _loadData();
   }
 
   void _setListStatus() {
@@ -36,8 +35,6 @@ class _HomeScreenScreenState extends State<HomeWidget> {
     final SettingQuestion setting = SettingQuestionExt.getSettingFromValue(settingId);
 
     setting.fetchData.getQuestion().then((value) {
-      print("----------");
-      print(value);
       if (value == null) return;
 
       setState(() {
@@ -46,16 +43,16 @@ class _HomeScreenScreenState extends State<HomeWidget> {
     });
   }
 
-  Future<void> _loadData() async {
-    final prefs = await SharedPreferences.getInstance();
-    // setState(() {
-    //   _questionList = List.from(jsonDecode((prefs.get("question")).toString()));
-    // });
-    final json = jsonDecode(prefs.get(Constants.question)!.toString());
-    _questionList = (json as List).map((e) => Question.fromJson(e as Map<String, dynamic>)).toList();
-
-    prefs.setInt(Constants.questionLength, _questionList.length);
-  }
+  // Future<void> _loadData() async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //   // setState(() {
+  //   //   _questionList = List.from(jsonDecode((prefs.get("question")).toString()));
+  //   // });
+  //   final json = jsonDecode(prefs.get(Constants.question)!.toString());
+  //   _questionList = (json as List).map((e) => Question.fromJson(e as Map<String, dynamic>)).toList();
+  //
+  //   prefs.setInt(Constants.questionLength, _questionList.length);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +87,7 @@ class _HomeScreenScreenState extends State<HomeWidget> {
         body: RefreshIndicator(
           onRefresh: () async {
             setState(() {
-              _loadData();
+              _setListStatus();
             });
           },
           child: SingleChildScrollView(
@@ -117,10 +114,7 @@ class _HomeScreenScreenState extends State<HomeWidget> {
                               itemBuilder: (context, index) {
                                 return Padding(
                                   padding: const EdgeInsets.symmetric(vertical: 5),
-                                  child: _itemQuestion(
-                                      _questionList[listDisable == 1 ? Random().nextInt(_questionList.length) : index],
-                                      index),
-                                  // child: _itemQuestion(_questionList[Random().nextInt(_questionList.length)], index),
+                                  child: _itemQuestion(_questionList[index], index),
                                 );
                               },
                             ),
