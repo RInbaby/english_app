@@ -44,13 +44,16 @@ class AppSetting {
   void saveQuestionSetting(int value) async {
     // dung share pref de luu
     // 1: Mặc định 2: random
-    final _sharedPreferences = await SharedPreferences.getInstance();
-    _sharedPreferences.setInt(Constants.chooseSetting, value);
+    final sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setInt(Constants.chooseSetting, value);
   }
 
-  int getQuestionSetting() {
+  Future<int> getQuestionSetting() async {
     // dung share pref de lay
-    return 0;
+    int chooseNumber = 0;
+    final sharedPreferences = await SharedPreferences.getInstance();
+    chooseNumber = sharedPreferences.getInt(Constants.chooseSetting) ?? 0;
+    return chooseNumber;
   }
 }
 

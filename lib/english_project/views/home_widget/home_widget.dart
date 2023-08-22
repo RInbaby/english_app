@@ -29,8 +29,9 @@ class _HomeScreenScreenState extends State<HomeWidget> {
     _setListStatus();
   }
 
-  void _setListStatus() {
-    final int settingId = AppSetting.instance.getQuestionSetting();
+  void _setListStatus() async {
+    // lấy id gói câu hỏi được chọn trong setting
+    final int settingId = await AppSetting.instance.getQuestionSetting();
 
     final SettingQuestion setting = SettingQuestionExt.getSettingFromValue(settingId);
 
@@ -76,6 +77,9 @@ class _HomeScreenScreenState extends State<HomeWidget> {
                   return const SettingListItems();
                 })).then((value) {
                   if (value != null) {
+                    setState(() {
+                      _setListStatus();
+                    });
                     // setState(() {
                     //   listDisable = value;
                     // });
