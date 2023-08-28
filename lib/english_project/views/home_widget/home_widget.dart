@@ -34,10 +34,9 @@ class _HomeScreenScreenState extends State<HomeWidget> {
     final int settingId = await AppSetting.instance.getQuestionSetting();
 
     final SettingQuestion setting = SettingQuestionExt.getSettingFromValue(settingId);
-
+    print("------ soduochon ${settingId}");
     setting.fetchData.getQuestion().then((value) {
-      if (value == null) return;
-
+      if (value.isEmpty) return;
       setState(() {
         _questionList = value;
       });

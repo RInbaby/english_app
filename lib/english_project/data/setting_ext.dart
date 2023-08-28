@@ -38,9 +38,9 @@ extension SettingQuestionExt on SettingQuestion {
 
   static SettingQuestion getSettingFromValue(int value) {
     switch (value) {
-      case 0:
-        return SettingQuestion.defaultList;
       case 1:
+        return SettingQuestion.defaultList;
+      case 2:
         return SettingQuestion.randomList;
       default:
         return SettingQuestion.defaultList;
