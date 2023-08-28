@@ -23,3 +23,15 @@ A few resources to get you started if this is your first Flutter project:
 
 
 # english_app
+
+##### Load data from SharePreFerence:
+ " Future<void> _loadData() async {
+  final prefs = await SharedPreferences.getInstance();
+  // setState(() {
+  //   _questionList = List.from(jsonDecode((prefs.get("question")).toString()));
+  // });
+  final json = jsonDecode(prefs.get(Constants.question)!.toString());
+  _questionList = (json as List).map((e) => Question.fromJson(e as Map<String, dynamic>)).toList();
+
+  prefs.setInt(Constants.questionLength, _questionList.length);
+  } "

@@ -16,10 +16,12 @@ class CreateQuestionWidget extends StatefulWidget {
 
 class _CreateQuestionWidgetState extends State<CreateQuestionWidget> {
   List<Question> _questionList = [];
+  late int lengthListQuestion;
 
   @override
   void initState() {
     _loadData();
+    lengthListQuestion = 1;
     super.initState();
   }
 
@@ -40,7 +42,7 @@ class _CreateQuestionWidgetState extends State<CreateQuestionWidget> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text("Create A Question"),
+        title: const Text("Create Question"),
         actions: [
           InkWell(
               onTap: () async {
@@ -59,7 +61,7 @@ class _CreateQuestionWidgetState extends State<CreateQuestionWidget> {
               child: const Align(
                 alignment: Alignment.center,
                 child: Text(
-                  "Lưu",
+                  "Lưu  ",
                   style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 22),
                 ),
               )),
@@ -71,77 +73,107 @@ class _CreateQuestionWidgetState extends State<CreateQuestionWidget> {
             child: const Icon(Icons.arrow_back_ios_sharp)),
       ),
       body: SingleChildScrollView(
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: Colors.white,
-            boxShadow: const [
-              BoxShadow(color: Colors.black, spreadRadius: 1),
-            ],
+        physics: const AlwaysScrollableScrollPhysics(),
+        child: _buildBodyView(question, answer1, answer2, correct),
+      ),
+    );
+  }
+
+  Widget _buildBodyView(TextEditingController question, answer1, answer2, correct) {
+    return Column(
+      children: [
+        ListView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: lengthListQuestion,
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+              // @TODO: check controller cac cau hoi khac nhau
+              return _buildBodyQuestion(question, answer1, answer2, correct);
+            }),
+        InkWell(
+            onTap: () {
+              setState(() {
+                lengthListQuestion++;
+              });
+            },
+            child: const Icon(Icons.add_circle)),
+        const SizedBox(
+          height: 50,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildBodyQuestion(TextEditingController question, answer1, answer2, correct) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: Colors.grey[300],
+        boxShadow: const [
+          BoxShadow(color: Colors.black, spreadRadius: 1),
+        ],
+      ),
+      margin: const EdgeInsets.all(8),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          TextFormField(
+            controller: question,
+            decoration: const InputDecoration(
+              border: UnderlineInputBorder(),
+              labelText: 'Enter your question',
+            ),
+            maxLines: 6,
           ),
-          margin: const EdgeInsets.all(15),
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 50),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            crossAxisAlignment: CrossAxisAlignment.center,
+          const SizedBox(
+            height: 50,
+          ),
+          ListView(
+            cacheExtent: 40,
+            shrinkWrap: true,
             children: [
               TextFormField(
-                controller: question,
+                controller: answer1,
                 decoration: const InputDecoration(
-                  border: UnderlineInputBorder(),
-                  labelText: 'Enter your question',
+                  hintText: "Your Answer",
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(width: 1, color: Colors.black),
+                  ),
                 ),
-                maxLines: 6,
+                maxLines: 1,
               ),
               const SizedBox(
-                height: 50,
-              ),
-              ListView(
-                cacheExtent: 40,
-                shrinkWrap: true,
-                children: [
-                  TextFormField(
-                    controller: answer1,
-                    decoration: const InputDecoration(
-                      hintText: "Your Answer",
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(width: 1, color: Colors.black),
-                      ),
-                    ),
-                    maxLines: 1,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  TextFormField(
-                    controller: answer2,
-                    decoration: const InputDecoration(
-                      hintText: "Your Answer",
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(width: 1, color: Colors.black),
-                      ),
-                    ),
-                    maxLines: 1,
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 50,
+                height: 10,
               ),
               TextFormField(
-                keyboardType: TextInputType.number,
-                controller: correct,
+                controller: answer2,
                 decoration: const InputDecoration(
-                  hintText: "Correct Key",
+                  hintText: "Your Answer",
                   enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(width: 1, color: Colors.lightGreen),
+                    borderSide: BorderSide(width: 1, color: Colors.black),
                   ),
                 ),
                 maxLines: 1,
               ),
             ],
           ),
-        ),
+          const SizedBox(
+            height: 50,
+          ),
+          TextFormField(
+            keyboardType: TextInputType.number,
+            controller: correct,
+            decoration: const InputDecoration(
+              hintText: "Correct Key",
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(width: 1, color: Colors.lightGreen),
+              ),
+            ),
+            maxLines: 1,
+          ),
+        ],
       ),
     );
   }
